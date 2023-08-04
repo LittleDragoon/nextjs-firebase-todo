@@ -36,13 +36,15 @@ export const Auth = () => {
   return (
     <>
       {!isUserSignedIn && (
-        <button
-          onClick={signInWithGoogle}
-          className="flex items-center gap-x-2 text-gray-200 bg-gradient-to-tr from-[#042354] to-[#004e92] rounded-md my-4 px-2 font-bold text-center"
-        >
-          <FaGoogle />
-          <span>Log in with Google</span>
-        </button>
+        <>
+          <button
+            onClick={signInWithGoogle}
+            className="flex items-center p-3 gap-x-2 rounded-md my-4 font-bold text-center text-gray-200 transition-all duration-500 bg-gradient-to-t from-[#302b63] via-[#042354] to-[#004e92] bg-size-200 bg-pos-0 hover:bg-pos-100"
+          >
+            <FaGoogle />
+            <span>Log in with Google</span>
+          </button>
+        </>
       )}
       {isUserSignedIn && (
         <div className="flex gap-x-2 items-center">
@@ -51,7 +53,7 @@ export const Auth = () => {
             onClick={() => {
               auth.signOut();
             }}
-            className="flex items-center gap-x-2 text-gray-200 bg-gradient-to-tr from-[#042354] to-[#004e92] rounded-md my-4 px-2 font-bold text-center"
+            className="flex items-center p-2 my-4 rounded-md font-bold text-center gap-x-2 text-gray-200 transition-all duration-500 bg-gradient-to-b from-[#302b63] via-[#042354] to-[#004e92] bg-size-200 bg-pos-0  hover:bg-pos-100"
           >
             <span>Log out</span>
           </button>

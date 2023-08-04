@@ -11,8 +11,8 @@ export const AddTodo = () => {
         className="w-full rounded-sm text-white border border-gray-400 px-2 py-2 bg-transparent"
         autoFocus={true}
         type="text"
-        id="anime-input"
-        name="anime-input"
+        id="title-id"
+        name="title-name"
         placeholder="Enter a title"
         onChange={(e) => setTitle(e.target.value)}
       />
@@ -27,8 +27,8 @@ export const AddTodo = () => {
       />
       <select
         className="w-full rounded-sm text-white border border-gray-400 px-2 py-2 bg-transparent"
-        name="pets"
-        id="pet-select"
+        name="status"
+        id="status-id"
         onChange={(e) => setStatus(e.target.value)}
       >
         <option value="Pending">Pending ⌛</option>
@@ -37,7 +37,7 @@ export const AddTodo = () => {
       <button
         className="w-full color-gray-400 bg-gradient-to-tr from-[#000428] to-[#004e92] rounded-md px-2 text-bold text-center"
         type="button"
-        name="get-anime"
+        name="add-todo"
         onClick={() => {
           alert(`This is the message : ${title} / ${description} / ${status} `);
         }}
