@@ -1,18 +1,11 @@
 import React from "react";
 import { FaGoogle } from "react-icons/fa";
-import {
-  GoogleAuthProvider,
-  signInWithPopup,
-  onAuthStateChanged,
-} from "firebase/auth";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { useAuth } from "../hooks/useAuth";
 import { auth } from "../firebase/index";
 
 export const Auth = () => {
-  const [title, setTitle] = React.useState("");
-  const [description, setDescription] = React.useState("");
-  const [status, setStatus] = React.useState("Pending");
-  const [userEmail, setUserEmail] = React.useState("");
-  const [isUserLogged, setIsUserLogged] = React.useState(false);
+  const { userEmail, isUserSignedIn } = useAuth();
 
   // To sign in with Google the first time
   const signInWithGoogle = () => {
@@ -40,22 +33,9 @@ export const Auth = () => {
       });
   };
 
-  auth.onAuthStateChanged((user) => {
-    if (user) {
-      // User is signed in
-      console.log("User is signed in:", user.displayName, user.email);
-      setUserEmail(user.email);
-      setIsUserLogged(true);
-    } else {
-      // User is signed out or not signed in
-      console.log("User is signed out");
-      setUserEmail("");
-      setIsUserLogged(false);
-    }
-  });
   return (
     <>
-      {!isUserLogged && (
+      {!isUserSignedIn && (
         <button
           onClick={signInWithGoogle}
           className="flex items-center gap-x-2 text-gray-200 bg-gradient-to-tr from-[#042354] to-[#004e92] rounded-md my-4 px-2 font-bold text-center"
@@ -64,7 +44,7 @@ export const Auth = () => {
           <span>Log in with Google</span>
         </button>
       )}
-      {isUserLogged && (
+      {isUserSignedIn && (
         <div className="flex gap-x-2 items-center">
           <div className="font-bold text-white">Connected with {userEmail}</div>
           <button
