@@ -6,7 +6,7 @@ export const AddTodo = () => {
   const [status, setStatus] = React.useState("Pending");
 
   return (
-    <div className="flex flex-col gap-y-3 w-2/5 items-center pt-4">
+    <div className="flex flex-col gap-y-3 w-2/5 items-center pt-4 mb-8">
       <input
         className="w-full rounded-sm text-white border border-gray-400 px-2 py-2 bg-transparent"
         autoFocus={true}
