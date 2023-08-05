@@ -1,4 +1,5 @@
 import React from "react";
+import { addTodoCard } from "../api/todo";
 
 export const AddTodo = () => {
   const [title, setTitle] = React.useState("");
@@ -38,9 +39,7 @@ export const AddTodo = () => {
         className="w-full color-gray-400 bg-gradient-to-tr from-[#000428] to-[#004e92] rounded-md px-2 text-bold text-center"
         type="button"
         name="add-todo"
-        onClick={() => {
-          alert(`This is the message : ${title} / ${description} / ${status} `);
-        }}
+        onClick={() => addTodoCard({ userId: "1", title, description, status })}
       >
         <b className="text-gray-400">Add</b>
       </button>
