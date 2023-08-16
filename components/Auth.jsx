@@ -6,7 +6,7 @@ import { auth } from "../firebase/index";
 import { useToast } from "@chakra-ui/react";
 
 export const Auth = () => {
-  const { userEmail, isUserSignedIn } = useAuth();
+  const { user, isUserSignedIn } = useAuth();
   const toast = useToast();
 
   // To sign in with Google the first time
@@ -67,7 +67,8 @@ export const Auth = () => {
       {isUserSignedIn && (
         <div className="flex gap-x-2 items-center">
           <div className="text-white">
-            Connected with <span className="italic font-bold">{userEmail}</span>
+            Connected with{" "}
+            <span className="italic font-bold">{user.email}</span>
           </div>
           <button
             onClick={signOut}

@@ -3,11 +3,12 @@ import { TodoCard } from "./TodoCard";
 import { db } from "../firebase/index";
 import { collection, getDocs, onSnapshot } from "firebase/firestore";
 import { useAuth } from "../hooks/useAuth";
+import { doc, getDoc, deleteDoc } from "firebase/firestore";
 
 export const TodoList = () => {
   const [todoList, setTodoList] = React.useState(null);
 
-  const { userEmail } = useAuth();
+  const { user } = useAuth();
   // getAllDocs gets called only when user changes (not when data in firestore change)
   const getAllDocs = () => {
     // onSnapshot always listen to changes in firebase and the callback functon gets executed
@@ -20,7 +21,7 @@ export const TodoList = () => {
     });
   };
 
-  React.useEffect(getAllDocs, [userEmail]);
+  React.useEffect(getAllDocs, [user.email]);
 
   return (
     <div className="grid grid-cols-3 gap-6 p-10">
