@@ -3,7 +3,6 @@ import { TodoCard } from "./TodoCard";
 import { db } from "../firebase/index";
 import { collection, getDocs, onSnapshot } from "firebase/firestore";
 import { useAuth } from "../hooks/useAuth";
-import { doc, getDoc, deleteDoc } from "firebase/firestore";
 
 export const TodoList = () => {
   const [todoList, setTodoList] = React.useState(null);
@@ -15,7 +14,8 @@ export const TodoList = () => {
     onSnapshot(collection(db, "todoList"), (querySnapchot) => {
       let userTemporaryTodoList = [];
       querySnapchot.docs.forEach((doc) => {
-        userTemporaryTodoList.push(doc.data());
+        //doc has a "hidden" id props which is the automatic generated id of the document
+        userTemporaryTodoList.push({ id: doc.id, ...doc.data() });
       });
       setTodoList(userTemporaryTodoList);
     });
@@ -26,8 +26,15 @@ export const TodoList = () => {
   return (
     <div className="grid grid-cols-3 gap-6 p-10">
       {todoList &&
-        todoList.map((x, i) => (
-          <TodoCard key={i} user title description status />
+        todoList.map((card) => (
+          <TodoCard
+            key={card.id}
+            cardId={card.id}
+            user={user}
+            title={card.title}
+            description={card.description}
+            status={card.status}
+          />
         ))}
     </div>
   );

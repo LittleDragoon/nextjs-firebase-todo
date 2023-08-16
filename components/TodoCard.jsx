@@ -1,8 +1,9 @@
 import React from "react";
 import { FaToggleOff, FaToggleOn, FaTrash } from "react-icons/fa";
 import clsx from "clsx";
+import { deleteCard } from "@/api/todo";
 
-export const TodoCard = ({ user, title, description, status }) => {
+export const TodoCard = ({ cardId, user, title, description, status }) => {
   const [todoCard, setTodoCard] = React.useState({
     user,
     title,
@@ -36,7 +37,7 @@ export const TodoCard = ({ user, title, description, status }) => {
         >
           {todoCard.status === "completed" ? <FaToggleOn /> : <FaToggleOff />}
         </button>
-        <button onClick={() => alert("Delete this card")}>
+        <button onClick={() => deleteCard(cardId)}>
           <FaTrash />
         </button>
       </div>
