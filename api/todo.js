@@ -1,6 +1,11 @@
-import { collection, addDoc } from "firebase/firestore";
+import {
+  doc,
+  deleteDoc,
+  collection,
+  addDoc,
+  updateDoc,
+} from "firebase/firestore";
 import { db } from "../firebase/index";
-import { doc, deleteDoc } from "firebase/firestore";
 
 // Add a new document with a automatic generated "id".
 export const addTodoCard = async ({ userId, title, description, status }) => {
@@ -10,6 +15,8 @@ export const addTodoCard = async ({ userId, title, description, status }) => {
       title: title,
       description: description,
       status: status,
+      //to order firebase documents
+      createdAt: new Date().getTime(),
     });
   } catch (error) {
     throw new Error(`Error in adding. Here is the reason : ${error}`);
@@ -28,4 +35,9 @@ export const deleteCard = async (documentId) => {
   } catch (err) {
     throw new Error("Error in deleting cards");
   }
+};
+
+export const updateCard = async (documentId, status) => {
+  const documentToUpdateRef = doc(db, "todoList", documentId);
+  await updateDoc(documentToUpdateRef, { status: status });
 };

@@ -3,9 +3,9 @@ import { addTodoCard } from "../api/todo";
 import { useAuth } from "../hooks/useAuth";
 
 export const AddTodo = () => {
-  const [title, setTitle] = React.useState("eazaj");
+  const [title, setTitle] = React.useState("");
   const [description, setDescription] = React.useState("");
-  const [status, setStatus] = React.useState("Pending");
+  const [status, setStatus] = React.useState("pending");
 
   const { user } = useAuth();
 
@@ -13,7 +13,7 @@ export const AddTodo = () => {
     await addTodoCard({ userId: user.uid, title, description, status });
     setTitle("");
     setDescription("");
-    setStatus("Pending");
+    setStatus("pending");
   };
   return (
     <div className="flex flex-col gap-y-3 w-2/5 items-center pt-4 mb-8">
@@ -44,7 +44,7 @@ export const AddTodo = () => {
         value={status}
         onChange={(e) => setStatus(e.target.value)}
       >
-        <option value="Pending">Pending ⌛</option>
+        <option value="pending">pending ⌛</option>
         <option value="Completed">Completed ✅</option>
       </select>
       <button

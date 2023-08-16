@@ -1,7 +1,7 @@
 import React from "react";
 import { TodoCard } from "./TodoCard";
 import { db } from "../firebase/index";
-import { collection, getDocs, onSnapshot } from "firebase/firestore";
+import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { useAuth } from "../hooks/useAuth";
 
 export const TodoList = () => {
@@ -10,8 +10,12 @@ export const TodoList = () => {
   const { user } = useAuth();
   // getAllDocs gets called only when user changes (not when data in firestore change)
   const getAllDocs = () => {
+    const orderedQuery = query(
+      collection(db, "todoList"),
+      orderBy("createdAt", "desc")
+    );
     // onSnapshot always listen to changes in firebase and the callback functon gets executed
-    onSnapshot(collection(db, "todoList"), (querySnapchot) => {
+    onSnapshot(orderedQuery, (querySnapchot) => {
       let userTemporaryTodoList = [];
       querySnapchot.docs.forEach((doc) => {
         //doc has a "hidden" id props which is the automatic generated id of the document
@@ -24,7 +28,7 @@ export const TodoList = () => {
   React.useEffect(getAllDocs, [user.email]);
 
   return (
-    <div className="grid grid-cols-3 gap-6 p-10">
+    <div className="w-full grid grid-cols-3 gap-6 p-10">
       {todoList &&
         todoList.map((card) => (
           <TodoCard
