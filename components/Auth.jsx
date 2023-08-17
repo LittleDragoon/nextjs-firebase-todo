@@ -45,7 +45,7 @@ export const Auth = () => {
     auth.signOut();
     toast({
       title: "Signed out successfully",
-      status: "warning",
+      status: "success",
       duration: 3000,
       isClosable: true,
     });
@@ -72,7 +72,7 @@ export const Auth = () => {
           </div>
           <button
             onClick={signOut}
-            className="flex items-center p-2 my-4 rounded-md font-bold text-center gap-x-2 text-gray-200 transition-all duration-500 bg-gradient-to-b from-[#302b63] via-[#042354] to-[#004e92] bg-size-200 bg-pos-0  hover:bg-pos-100"
+            className="flex items-center p-2 my-4 rounded-md font-bold text-center gap-x-2 text-gray-200 bg-gradient-to-b from-[#004e92] to-[#042354]"
           >
             <span>Log out</span>
           </button>

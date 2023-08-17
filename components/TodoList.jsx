@@ -7,9 +7,14 @@ import { useAuth } from "../hooks/useAuth";
 export const TodoList = () => {
   const [todoList, setTodoList] = React.useState(null);
 
-  const { user } = useAuth();
+  const { user, isUserSignedIn } = useAuth();
   // getAllDocs gets called only when user changes (not when data in firestore change)
   const getAllDocs = () => {
+    if (!isUserSignedIn) {
+      setTodoList([]);
+      return;
+    }
+
     const orderedQuery = query(
       collection(db, "todoList"),
       orderBy("createdAt", "desc")
@@ -25,7 +30,7 @@ export const TodoList = () => {
     });
   };
 
-  React.useEffect(getAllDocs, [user.email]);
+  React.useEffect(getAllDocs, [user.email, isUserSignedIn]);
 
   return (
     <div className="w-full grid grid-cols-3 gap-6 p-10">
