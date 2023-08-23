@@ -1,7 +1,13 @@
 import React from "react";
 import { TodoCard } from "./TodoCard";
 import { db } from "../firebase/index";
-import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
+import {
+  collection,
+  onSnapshot,
+  orderBy,
+  query,
+  where,
+} from "firebase/firestore";
 import { useAuth } from "../hooks/useAuth";
 
 export const TodoList = () => {
@@ -17,6 +23,7 @@ export const TodoList = () => {
 
     const orderedQuery = query(
       collection(db, "todoList"),
+      where("user", "==", user.uid),
       orderBy("createdAt", "desc")
     );
     // onSnapshot always listen to changes in firebase and the callback functon gets executed

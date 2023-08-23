@@ -44,7 +44,7 @@ export const TodoCard = ({
           <FaTrash />
         </button>
       </div>
-      <div className="flex gap-x-2">
+      <div className="flex gap-x-2 rounded-lg border bg-gray-200 w-fit px-1 text-sm">
         <div>{formattedDeadlineDate}</div>
       </div>
       <p className="text-gray-700 text-base text-justify mt-4">{description}</p>

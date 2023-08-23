@@ -61,6 +61,7 @@ export const AddTodo = () => {
         placeholderText="Select a deadline : dd-mm-yyyy"
         popperPlacement="right-start"
         selected={deadlineDate}
+        minDate={new Date()}
         onChange={(date) => setDeadlineDate(date)}
       />
       <select
