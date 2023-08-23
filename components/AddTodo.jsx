@@ -2,19 +2,29 @@ import React from "react";
 import { addTodoCard } from "../api/todo";
 import { useAuth } from "../hooks/useAuth";
 import { useToast, Tooltip } from "@chakra-ui/react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 export const AddTodo = () => {
   const [title, setTitle] = React.useState("");
   const [description, setDescription] = React.useState("");
+  const [deadlineDate, setDeadlineDate] = React.useState(null);
   const [status, setStatus] = React.useState("pending");
 
   const { user, isUserSignedIn } = useAuth();
   const toast = useToast();
 
   const addTodo = async () => {
-    await addTodoCard({ userId: user.uid, title, description, status });
+    await addTodoCard({
+      userId: user.uid,
+      title,
+      description,
+      deadlineDate,
+      status,
+    });
     setTitle("");
     setDescription("");
+    setDeadlineDate(null);
     setStatus("pending");
     toast({
       title: "Card successfully added",
@@ -45,6 +55,14 @@ export const AddTodo = () => {
         cols="50"
         onChange={(e) => setDescription(e.target.value)}
       />
+      <DatePicker
+        wrapperClassName="w-full"
+        className="w-full px-2 py-1 bg-transparent border border-gray-400 text-white rounded-sm"
+        placeholderText="Select a deadline : dd-mm-yyyy"
+        popperPlacement="right-start"
+        selected={deadlineDate}
+        onChange={(date) => setDeadlineDate(date)}
+      />
       <select
         className="w-full rounded-sm text-white border border-gray-400 px-2 py-2 bg-transparent"
         name="status"
@@ -55,12 +73,16 @@ export const AddTodo = () => {
         <option value="pending">Pending ⌛</option>
         <option value="Completed">Completed ✅</option>
       </select>
-      {title === "" || description === "" || !isUserSignedIn ? (
+      {title === "" ||
+      description === "" ||
+      deadlineDate === null ||
+      !isUserSignedIn ? (
         <Tooltip
+          maxW="2xl"
           hasArrow
           label={`${
             isUserSignedIn
-              ? "Title and Description should be filled first"
+              ? "Title, Description and Deadline should be filled first"
               : "You must be logged in first"
           }`}
           bg="gray.300"

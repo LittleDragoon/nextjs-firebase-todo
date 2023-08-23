@@ -24,7 +24,11 @@ export const TodoList = () => {
       let userTemporaryTodoList = [];
       querySnapchot.docs.forEach((doc) => {
         //doc has a "hidden" id props which is the automatic generated id of the document
-        userTemporaryTodoList.push({ id: doc.id, ...doc.data() });
+        userTemporaryTodoList.push({
+          ...doc.data(),
+          id: doc.id,
+          deadlineDate: doc.data().deadlineDate.toDate(),
+        });
       });
       setTodoList(userTemporaryTodoList);
     });
@@ -39,9 +43,9 @@ export const TodoList = () => {
           <TodoCard
             key={card.id}
             cardId={card.id}
-            user={user}
             title={card.title}
             description={card.description}
+            deadlineDate={card.deadlineDate}
             status={card.status}
           />
         ))}

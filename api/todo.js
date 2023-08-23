@@ -8,12 +8,19 @@ import {
 import { db } from "../firebase/index";
 
 // Add a new document with a automatic generated "id".
-export const addTodoCard = async ({ userId, title, description, status }) => {
+export const addTodoCard = async ({
+  userId,
+  title,
+  description,
+  deadlineDate,
+  status,
+}) => {
   try {
     await addDoc(collection(db, "todoList"), {
       user: userId,
       title: title,
       description: description,
+      deadlineDate: deadlineDate,
       status: status,
       //to order firebase documents
       createdAt: new Date().getTime(),
