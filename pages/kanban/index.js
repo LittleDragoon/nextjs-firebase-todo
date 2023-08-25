@@ -1,9 +1,10 @@
+import React from "react";
 import { Column } from "../../components/kanban/Column";
 import { DragDropContext } from "react-beautiful-dnd";
 import { resetServerContext } from "react-beautiful-dnd";
 
 export default function Kanban() {
-  const initialData = {
+  const [data, setData] = React.useState({
     columns: {
       "column-1": {
         id: "column-1",
@@ -29,19 +30,56 @@ export default function Kanban() {
       },
     },
     columnOrder: ["column-1"],
-  };
+  });
 
-  const onDragEnd = () => {};
+  const onDragEnd = (result) => {
+    const { destination, source, draggableId } = result;
+
+    if (!destination) return null;
+    if (
+      destination.droppableId === source.droppableId &&
+      destination.index === source.index
+    ) {
+      return null;
+    }
+
+    const column = data.columns[source.droppableId];
+    const newCardsID = [...column.cardsID];
+
+    /**
+     * Move the selected card to its new position
+     */
+    newCardsID.splice(source.index, 1);
+    // This line deletes 0 element at position destination.index and inserts draggableId
+    newCardsID.splice(destination.index, 0, draggableId);
+
+    const newColumn = {
+      ...column,
+      cardsID: newCardsID,
+    };
+
+    const newData = {
+      ...data,
+      columns: {
+        ...data.columns,
+        [newColumn.id]: {
+          ...newColumn,
+        },
+      },
+    };
+
+    setData(newData);
+  };
   return (
     <div className="bg-gradient-to-b from-[#F1A7F1] to-[#FAD0C4] min-h-screen ">
       <div className="flex flex-col items-center font-semibold text-4xl py-4 font-bold text-white">
         Trello 2.0
       </div>
       <DragDropContext onDragEnd={onDragEnd}>
-        {initialData.columnOrder.map((column, index) => {
-          const col = initialData.columns[column];
-          const cards = initialData.columns[column].cardsID.map(
-            (cardID) => initialData.cards[cardID]
+        {data.columnOrder.map((column, index) => {
+          const col = data.columns[column];
+          const cards = data.columns[column].cardsID.map(
+            (cardID) => data.cards[cardID]
           );
 
           return (
