@@ -8,8 +8,13 @@ export default function Kanban() {
     columns: {
       "column-1": {
         id: "column-1",
-        title: "Column Title",
+        title: "Column Title 1",
         cardsID: ["card-1", "card-2", "card-3"],
+      },
+      "column-2": {
+        id: "column-2",
+        title: "Column Title 2",
+        cardsID: ["card-4", "card-5", "card-6"],
       },
     },
     cards: {
@@ -28,13 +33,28 @@ export default function Kanban() {
         title: "title 3",
         content: "content 3",
       },
+      "card-4": {
+        id: "card-4",
+        title: "title 4",
+        content: "content 4",
+      },
+      "card-5": {
+        id: "card-5",
+        title: "title 5",
+        content: "content 5",
+      },
+      "card-6": {
+        id: "card-6",
+        title: "title 6",
+        content: "content 6",
+      },
     },
-    columnOrder: ["column-1"],
+    columnOrder: ["column-1", "column-2"],
   });
 
   const onDragEnd = (result) => {
     const { destination, source, draggableId } = result;
-
+    console.log(result);
     if (!destination) return null;
     if (
       destination.droppableId === source.droppableId &&
@@ -42,33 +62,69 @@ export default function Kanban() {
     ) {
       return null;
     }
+    if (destination.droppableId === source.droppableId) {
+      const column = data.columns[source.droppableId];
+      const newCardsID = [...column.cardsID];
 
-    const column = data.columns[source.droppableId];
-    const newCardsID = [...column.cardsID];
+      /**
+       * Move the selected card to its new position
+       */
+      newCardsID.splice(source.index, 1);
+      // This line deletes 0 element at position destination.index and inserts draggableId
+      newCardsID.splice(destination.index, 0, draggableId);
 
-    /**
-     * Move the selected card to its new position
-     */
-    newCardsID.splice(source.index, 1);
-    // This line deletes 0 element at position destination.index and inserts draggableId
-    newCardsID.splice(destination.index, 0, draggableId);
+      const newColumn = {
+        ...column,
+        cardsID: newCardsID,
+      };
 
-    const newColumn = {
-      ...column,
-      cardsID: newCardsID,
-    };
-
-    const newData = {
-      ...data,
-      columns: {
-        ...data.columns,
-        [newColumn.id]: {
-          ...newColumn,
+      const newData = {
+        ...data,
+        columns: {
+          ...data.columns,
+          [newColumn.id]: {
+            ...newColumn,
+          },
         },
-      },
-    };
+      };
 
-    setData(newData);
+      setData(newData);
+    } else {
+      const sourceColumn = data.columns[source.droppableId];
+      const sourceNewCardsID = [...sourceColumn.cardsID];
+
+      const destinationColumn = data.columns[destination.droppableId];
+      const destinationNewCardsID = [...destinationColumn.cardsID];
+
+      sourceNewCardsID.splice(source.index, 1);
+      // This line deletes 0 element at position destination.index and inserts draggableId
+      destinationNewCardsID.splice(destination.index, 0, draggableId);
+
+      const sourceNewColumn = {
+        ...sourceColumn,
+        cardsID: sourceNewCardsID,
+      };
+
+      const destinationNewColumn = {
+        ...destinationColumn,
+        cardsID: destinationNewCardsID,
+      };
+
+      const newData = {
+        ...data,
+        columns: {
+          ...data.columns,
+          [sourceNewColumn.id]: {
+            ...sourceNewColumn,
+          },
+          [destinationNewColumn.id]: {
+            ...destinationNewColumn,
+          },
+        },
+      };
+
+      setData(newData);
+    }
   };
   return (
     <div className="bg-gradient-to-b from-[#F1A7F1] to-[#FAD0C4] min-h-screen ">
@@ -76,18 +132,16 @@ export default function Kanban() {
         Trello 2.0
       </div>
       <DragDropContext onDragEnd={onDragEnd}>
-        {data.columnOrder.map((column, index) => {
-          const col = data.columns[column];
-          const cards = data.columns[column].cardsID.map(
-            (cardID) => data.cards[cardID]
-          );
+        <div className="flex">
+          {data.columnOrder.map((column, index) => {
+            const col = data.columns[column];
+            const cards = data.columns[column].cardsID.map(
+              (cardID) => data.cards[cardID]
+            );
 
-          return (
-            <div className="flex flex-col" key={index}>
-              <Column column={col} cards={cards} />
-            </div>
-          );
-        })}
+            return <Column column={col} cards={cards} key={index} />;
+          })}
+        </div>
       </DragDropContext>
     </div>
   );
