@@ -1,6 +1,6 @@
 import React from "react";
 import { Column } from "../../components/kanban/Column";
-import { DragDropContext } from "react-beautiful-dnd";
+import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { resetServerContext } from "react-beautiful-dnd";
 
 export default function Kanban() {
@@ -53,14 +53,27 @@ export default function Kanban() {
   });
 
   const onDragEnd = (result) => {
-    const { destination, source, draggableId } = result;
-    console.log(result);
+    const { destination, source, draggableId, type } = result;
+
     if (!destination) return null;
     if (
       destination.droppableId === source.droppableId &&
       destination.index === source.index
     ) {
       return null;
+    }
+    if (type === "column") {
+      const col = [...data.columnOrder];
+      col.splice(source.index, 1);
+      col.splice(destination.index, 0, draggableId);
+
+      const newData = {
+        ...data,
+        columnOrder: col,
+      };
+
+      setData(newData);
+      return;
     }
     if (destination.droppableId === source.droppableId) {
       const column = data.columns[source.droppableId];
@@ -132,16 +145,38 @@ export default function Kanban() {
         Trello 2.0
       </div>
       <DragDropContext onDragEnd={onDragEnd}>
-        <div className="flex">
-          {data.columnOrder.map((column, index) => {
-            const col = data.columns[column];
-            const cards = data.columns[column].cardsID.map(
-              (cardID) => data.cards[cardID]
-            );
+        <Droppable
+          droppableId="all-columns"
+          direction="horizontal"
+          type="column"
+        >
+          {(provided) => {
+            return (
+              <div
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+                className="flex"
+              >
+                {data.columnOrder.map((column, index) => {
+                  const col = data.columns[column];
+                  const cards = data.columns[column].cardsID.map(
+                    (cardID) => data.cards[cardID]
+                  );
 
-            return <Column column={col} cards={cards} key={index} />;
-          })}
-        </div>
+                  return (
+                    <Column
+                      column={col}
+                      cards={cards}
+                      key={column}
+                      index={index}
+                    />
+                  );
+                })}
+                {provided.placeholder}
+              </div>
+            );
+          }}
+        </Droppable>
       </DragDropContext>
     </div>
   );
