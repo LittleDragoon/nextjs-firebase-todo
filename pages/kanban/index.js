@@ -155,7 +155,7 @@ export default function Kanban() {
               <div
                 ref={provided.innerRef}
                 {...provided.droppableProps}
-                className="flex"
+                className="flex items-start"
               >
                 {data.columnOrder.map((column, index) => {
                   const col = data.columns[column];

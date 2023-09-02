@@ -10,7 +10,7 @@ export const Card = ({ card, index }) => {
             {...provided.draggableProps}
             {...provided.dragHandleProps}
             ref={provided.innerRef}
-            className="border-r border-b border-l border-gray-400 bg-white rounded-b p-4 m-2"
+            className="border-r border-b border-l border-gray-400 bg-white rounded-b p-4 m-2 h-[100px]"
           >
             <div className="flex items-center gap-x-2">
               <div className="flex-1 text-gray-900 font-bold text-xl overflow-hidden whitespace-nowrap text-ellipsis">

@@ -6,12 +6,15 @@ import clsx from "clsx";
 export const Column = ({ column, cards, index }) => {
   return (
     <Draggable draggableId={column.id} index={index}>
-      {(provided) => {
+      {(provided, snapshot) => {
         return (
           <div
             {...provided.draggableProps}
             ref={provided.innerRef}
-            className="flex flex-col w-1/3 gap-y-2 m-2 p-2 border"
+            className={clsx(
+              "flex flex-col w-1/3 gap-y-2 m-2 p-2 border",
+              `${snapshot.draggingOver ? "bg-red-200 z-1" : null}`
+            )}
           >
             <div
               {...provided.dragHandleProps}
@@ -31,7 +34,7 @@ export const Column = ({ column, cards, index }) => {
                           ? "bg-gradient-to-b from-[#CCFBFF] to-[#CCFBF0] ease-in-out duration-400 "
                           : null
                       }`,
-                      "min-h-[400px]"
+                      "min-h-[250px]"
                     )}
                   >
                     {cards.map((card, index) => (
