@@ -8,13 +8,18 @@ export default function Kanban() {
     columns: {
       "column-1": {
         id: "column-1",
-        title: "Column Title 1",
+        title: "To Do",
         cardsID: ["card-1", "card-2", "card-3"],
       },
       "column-2": {
         id: "column-2",
-        title: "Column Title 2",
-        cardsID: ["card-4", "card-5", "card-6"],
+        title: "In Progress",
+        cardsID: ["card-4", "card-5"],
+      },
+      "column-3": {
+        id: "column-3",
+        title: "Done",
+        cardsID: ["card-6"],
       },
     },
     cards: {
@@ -49,7 +54,7 @@ export default function Kanban() {
         content: "content 6",
       },
     },
-    columnOrder: ["column-1", "column-2"],
+    columnOrder: ["column-1", "column-2", "column-3"],
   });
 
   const onDragEnd = (result) => {
@@ -140,8 +145,8 @@ export default function Kanban() {
     }
   };
   return (
-    <div className="bg-gradient-to-b from-[#F1A7F1] to-[#FAD0C4] min-h-screen ">
-      <div className="flex flex-col items-center font-semibold text-4xl py-4 font-bold text-white">
+    <div className="bg-gradient-to-b from-[#F1A7F1] to-[#FAD0C4] min-h-screen w-full items-center flex flex-col ">
+      <div className="flex flex-col items-center font-semibold text-4xl py-8 font-bold text-white">
         Trello 2.0
       </div>
       <DragDropContext onDragEnd={onDragEnd}>
@@ -155,7 +160,7 @@ export default function Kanban() {
               <div
                 ref={provided.innerRef}
                 {...provided.droppableProps}
-                className="flex items-start"
+                className="flex items-start w-[80%]"
               >
                 {data.columnOrder.map((column, index) => {
                   const col = data.columns[column];

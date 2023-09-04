@@ -2,6 +2,11 @@ import React from "react";
 import { Card } from "../../components/kanban/Card";
 import { Droppable, Draggable } from "react-beautiful-dnd";
 import clsx from "clsx";
+import { IoMdAddCircle } from "react-icons/io";
+
+const AddTodoInColumn = () => {
+  alert("The modal will soon open");
+};
 
 export const Column = ({ column, cards, index }) => {
   return (
@@ -12,8 +17,8 @@ export const Column = ({ column, cards, index }) => {
             {...provided.draggableProps}
             ref={provided.innerRef}
             className={clsx(
-              "flex flex-col w-1/3 gap-y-2 m-2 p-2 border",
-              `${snapshot.draggingOver ? "bg-red-200 z-1" : null}`
+              "flex flex-col w-1/3 gap-y-2 m-2 p-2 border bg-pink-100 rounded-md mx-4",
+              `${snapshot.draggingOver ? "bg-blue-100 z-1" : null}`
             )}
           >
             <div
@@ -45,6 +50,14 @@ export const Column = ({ column, cards, index }) => {
                 );
               }}
             </Droppable>
+            <div className="flex justify-end pb-4 pr-2 ">
+              <button
+                className="text-green-500 h-[12px]"
+                onClick={AddTodoInColumn}
+              >
+                <IoMdAddCircle className="h-8 w-8" />
+              </button>
+            </div>
           </div>
         );
       }}
