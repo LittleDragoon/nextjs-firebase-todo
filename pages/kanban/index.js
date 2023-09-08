@@ -7,55 +7,44 @@ import { AddCard } from "@/components/kanban/AddCard";
 export default function Kanban() {
   const [data, setData] = React.useState({
     columns: {
-      "To Do": {
-        id: "To Do",
+      UgAwN1hC4LvDh2I8Zlkh: {
+        id: "UgAwN1hC4LvDh2I8Zlkh",
         title: "To Do",
-        cardsID: ["card-1", "card-2", "card-3"],
+        cardsID: ["JA5jgvRKxxHIcBdRWati"],
       },
-      "In Progress": {
-        id: "In Progress",
+      MTGDGrG5Fci8iIXT5tvq: {
+        id: "MTGDGrG5Fci8iIXT5tvq",
         title: "In Progress",
-        cardsID: ["card-4", "card-5"],
+        cardsID: ["l11Qlum8IC5AHMOjtDvi"],
       },
-      Done: {
-        id: "Done",
+      Rze3ZwmX6rV8D05JLdUI: {
+        id: "Rze3ZwmX6rV8D05JLdUI",
         title: "Done",
-        cardsID: ["card-6"],
+        cardsID: ["xccsL9VEn87OipDQ173v"],
       },
     },
     cards: {
-      "card-1": {
-        id: "card-1",
+      JA5jgvRKxxHIcBdRWati: {
+        id: "JA5jgvRKxxHIcBdRWati",
         title: "title 1",
         content: "content 1",
       },
-      "card-2": {
-        id: "card-2",
+      l11Qlum8IC5AHMOjtDvi: {
+        id: "l11Qlum8IC5AHMOjtDvi",
         title: "title 2",
         content: "content 2",
       },
-      "card-3": {
-        id: "card-3",
+      xccsL9VEn87OipDQ173v: {
+        id: "xccsL9VEn87OipDQ173v",
         title: "title 3",
         content: "content 3",
       },
-      "card-4": {
-        id: "card-4",
-        title: "title 4",
-        content: "content 4",
-      },
-      "card-5": {
-        id: "card-5",
-        title: "title 5",
-        content: "content 5",
-      },
-      "card-6": {
-        id: "card-6",
-        title: "title 6",
-        content: "content 6",
-      },
     },
-    columnOrder: ["To Do", "In Progress", "Done"],
+    columnOrder: [
+      "UgAwN1hC4LvDh2I8Zlkh",
+      "MTGDGrG5Fci8iIXT5tvq",
+      "Rze3ZwmX6rV8D05JLdUI",
+    ],
   });
 
   const [isModalOpen, setIsModalOpen] = React.useState(false);
@@ -150,7 +139,11 @@ export default function Kanban() {
   return (
     <div className="bg-gradient-to-b from-[#F1A7F1] to-[#FAD0C4] min-h-screen w-full items-center flex flex-col ">
       {isModalOpen && (
-        <AddCard setIsModalOpen={setIsModalOpen} setData={setData} />
+        <AddCard
+          data={data}
+          setIsModalOpen={setIsModalOpen}
+          setData={setData}
+        />
       )}
 
       <div className="flex flex-col items-center font-semibold text-4xl py-8 font-bold text-white">

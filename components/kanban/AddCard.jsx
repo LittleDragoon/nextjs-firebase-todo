@@ -1,17 +1,44 @@
 import React from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import { useToast, Tooltip } from "@chakra-ui/react";
+import { db } from "../../firebase/index";
+import { doc, collection, set, addDoc, setDoc } from "firebase/firestore";
+import { v4 as uuidv4 } from "uuid";
 
-export const AddCard = ({ setIsModalOpen, setData }) => {
+export const AddCard = ({ data, setIsModalOpen, setData }) => {
   const [title, setTitle] = React.useState("");
   const [content, setContent] = React.useState("");
   const [status, setStatus] = React.useState("To Do");
 
   const toast = useToast();
 
-  const addCard = () => {
-    // Generate a unique card ID (you can use a UUID library for this)
-    const newCardId = `card-${Math.random().toString(36).substr(2, 9)}`;
+  const addCard = async (data) => {
+    // Function to add columns in firebase
+    // try {
+    //   Object.values(data.columns).forEach(async (column) => {
+    //     await addDoc(collection(db, "columns"), column);
+    //   });
+    // } catch (error) {
+    //   throw new Error(`Error in adding. Here is the reason : ${error}`);
+    // }
+
+    //Functions to add cards
+    // try {
+    //   Object.values(data.cards).forEach(async (card) => {
+    //     await addDoc(collection(db, "card"), card);
+    //   });
+    // } catch (error) {
+    //   throw new Error(`Error in adding. Here is the reason : ${error}`);
+    // }
+
+    //Add column order
+    // try {
+    //   await addDoc(collection(db, "columnOrder"), { order: data.columnOrder });
+    // } catch (error) {
+    //   throw new Error(`Error in adding. Here is the reason : ${error}`);
+    // }
+
+    const newCardId = uuidv4();
 
     // Create the new card object
     const newCard = {
@@ -20,7 +47,24 @@ export const AddCard = ({ setIsModalOpen, setData }) => {
       content: content,
     };
 
-    const columnIdToAddTo = status; // For example, add to "To Do" column
+    const columnIdToAddTo = Object.values(data.columns).filter(
+      (column) => column.title === status
+    )[0].id;
+
+    try {
+      setDoc(doc(db, "columns", columnIdToAddTo), {
+        ...data.columns[columnIdToAddTo],
+        cardsID: [...data.columns[columnIdToAddTo].cardsID, newCardId],
+      });
+    } catch (error) {
+      console.error("Error Updating Columns:", error);
+    }
+
+    try {
+      setDoc(doc(db, "card", newCardId), newCard);
+    } catch (error) {
+      console.error("Error Adding Document:", error);
+    }
 
     // Update the state to add the new card ID to the appropriate column
     setData((prevData) => ({
@@ -57,7 +101,7 @@ export const AddCard = ({ setIsModalOpen, setData }) => {
     <>
       {/* Overlay to hide what is behind */}
       <div className="fixed top-0 left-0 w-full h-full bg-black opacity-50 z-10"></div>
-      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white w-2/5 h-3/5 p-4 rounded-md border border-gray-300 overflow-auto z-20">
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white w-2/5 h-3/5 p-4 rounded-md border border-gray-300 overflow-auto z-20">
         <div className="flex flex-col gap-y-3 w-full h-full items-center">
           <input
             className="w-full rounded-sm border border-gray-400 px-2 py-2 bg-transparent"
@@ -119,7 +163,7 @@ export const AddCard = ({ setIsModalOpen, setData }) => {
                 disabled={title === "" || content === ""}
                 type="button"
                 name="add-todo"
-                onClick={addCard}
+                onClick={() => addCard(data)}
               >
                 <b className="text-gray-200">Add</b>
               </button>

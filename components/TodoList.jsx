@@ -41,7 +41,7 @@ export const TodoList = () => {
     });
   };
 
-  React.useEffect(getAllDocs, [user.email, isUserSignedIn]);
+  React.useEffect(getAllDocs, [user.email, isUserSignedIn, user.uid]);
 
   return (
     <div className="w-full grid grid-cols-3 gap-6 p-10">
