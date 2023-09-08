@@ -2,22 +2,23 @@ import React from "react";
 import { Column } from "../../components/kanban/Column";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { resetServerContext } from "react-beautiful-dnd";
+import { AddCard } from "@/components/kanban/AddCard";
 
 export default function Kanban() {
   const [data, setData] = React.useState({
     columns: {
-      "column-1": {
-        id: "column-1",
+      "To Do": {
+        id: "To Do",
         title: "To Do",
         cardsID: ["card-1", "card-2", "card-3"],
       },
-      "column-2": {
-        id: "column-2",
+      "In Progress": {
+        id: "In Progress",
         title: "In Progress",
         cardsID: ["card-4", "card-5"],
       },
-      "column-3": {
-        id: "column-3",
+      Done: {
+        id: "Done",
         title: "Done",
         cardsID: ["card-6"],
       },
@@ -54,8 +55,10 @@ export default function Kanban() {
         content: "content 6",
       },
     },
-    columnOrder: ["column-1", "column-2", "column-3"],
+    columnOrder: ["To Do", "In Progress", "Done"],
   });
+
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
 
   const onDragEnd = (result) => {
     const { destination, source, draggableId, type } = result;
@@ -146,6 +149,10 @@ export default function Kanban() {
   };
   return (
     <div className="bg-gradient-to-b from-[#F1A7F1] to-[#FAD0C4] min-h-screen w-full items-center flex flex-col ">
+      {isModalOpen && (
+        <AddCard setIsModalOpen={setIsModalOpen} setData={setData} />
+      )}
+
       <div className="flex flex-col items-center font-semibold text-4xl py-8 font-bold text-white">
         Trello 2.0
       </div>
@@ -174,6 +181,7 @@ export default function Kanban() {
                       cards={cards}
                       key={column}
                       index={index}
+                      setIsModalOpen={setIsModalOpen}
                     />
                   );
                 })}
