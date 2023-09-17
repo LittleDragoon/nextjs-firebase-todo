@@ -27,5 +27,8 @@
     "react-icons": "^4.10.1",
     "tailwindcss": "3.3.3",
     "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "mini-css-extract-plugin": "^2.7.6"
   }
 }
