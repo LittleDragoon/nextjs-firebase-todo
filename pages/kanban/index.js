@@ -198,7 +198,7 @@ export default function Kanban() {
       )}
 
       <div className="flex flex-col items-center font-semibold text-4xl py-8 font-bold text-white">
-        Trello 2.0
+        Kanban
       </div>
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable
